@@ -29,5 +29,5 @@ steps:
   inputs:
      command: publish
      publishRegistry: useFeed
-     publishFeed: https://pkgs.dev.azure.com/ygo74/_packaging/npm-local/npm/registry/
+     publishFeed: npm-local
   displayName: 'publish packages'
