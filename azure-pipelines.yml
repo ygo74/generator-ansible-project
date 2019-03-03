@@ -18,8 +18,13 @@ steps:
 - script: |
     npm install
     npm install -g yo
+    npm link
   displayName: 'npm install'
 
 - script: |
     yo ansible-project -help
+  displayName: 'Execute yo ansible-project'
+
+- script: |
+    npm publish
   displayName: 'Execute yo ansible-project'
