@@ -1,6 +1,6 @@
 # generator-ansible-project
 Yeoman generator for ansible project  
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/DarqueWarrior/generator-team/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/ygo74/generator-ansible-project/blob/master/LICENSE)
 
 
 ## Build Status
