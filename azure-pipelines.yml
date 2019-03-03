@@ -25,6 +25,9 @@ steps:
     yo ansible-project -help
   displayName: 'Execute yo ansible-project'
 
-- script: |
-    npm publish
-  displayName: 'Execute yo ansible-project'
+- task: Npm@1
+  inputs:
+     command: publish
+     publishRegistry: useFeed
+     publishFeed: https://pkgs.dev.azure.com/ygo74/_packaging/npm-local/npm/registry/
+  displayName: 'publish packages'
