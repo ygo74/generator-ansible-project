@@ -1,0 +1,7 @@
+---
+# Default variables for Application <%= application_name %>
+# Deprecated : Stop to use it, variables are now declared in group_vars
+
+# Application Identity
+application_name:    '<%= application_name %>'
+application_trigram: '<%= application_trigram %>'

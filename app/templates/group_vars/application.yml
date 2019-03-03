@@ -1,0 +1,9 @@
+---
+# Default variables for Application <%= application_name %>
+
+# Application Identity
+application_name:    '<%= application_name %>'
+application_trigram: '<%= application_trigram %>'
+
+# Debug variables
+

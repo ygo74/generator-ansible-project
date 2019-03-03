@@ -1,0 +1,17 @@
+# Inventories for Application <%= application_name %> in <%= application_inventory %>
+
+
+
+<% operating_systems.forEach(function(os){  %>
+[<%= application_name %>_<%= os %>:children]
+
+<% }); %>
+
+[<%= application_name %>:children]
+
+
+<% operating_systems.forEach(function(os){  %>
+[<%= os %>:children]
+<%= application_name %>_<%= os %>
+
+<% }); %>

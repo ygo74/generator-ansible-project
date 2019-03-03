@@ -1,0 +1,4 @@
+---
+# Default job templates to be created in Ansible Tower for Application <%= application_name %> across all environments
+# if you want specific job templates for an environment, create a specific file for this environment :
+# job_templates_[environment name].yml

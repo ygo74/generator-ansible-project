@@ -1,0 +1,6 @@
+---
+# Default variables for Application <%= application_name %> in environment in <%= application_inventory %>
+
+# Default variables
+application_environment:    '<%= application_inventory %>'
+
