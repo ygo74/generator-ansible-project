@@ -31,3 +31,8 @@ steps:
      publishRegistry: useFeed
      publishFeed: npm-local
   displayName: 'publish packages'
+
+- task: PublishPipelineArtifact@0
+  inputs:
+    artifactName: 'generator-ansible-project'
+    targetPath: $(System.DefaultWorkingDirectory)  
