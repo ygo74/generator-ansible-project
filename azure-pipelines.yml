@@ -26,7 +26,7 @@ steps:
   displayName: 'Execute yo ansible-project'
 
 - script: |
-    npm version ${Build.BuildNumber}
+    npm version $(Build.BuildNumber)
   displayName: 'Update generator version'
 
 - task: Npm@1
