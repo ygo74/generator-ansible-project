@@ -25,6 +25,10 @@ steps:
     yo ansible-project -help
   displayName: 'Execute yo ansible-project'
 
+- script: |
+    npm version ${Build.BuildNumber}
+  displayName: 'Update generator version'
+
 - task: Npm@1
   inputs:
      command: publish
