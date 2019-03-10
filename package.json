@@ -1,6 +1,6 @@
 {
   "name": "generator-ansible-project",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Create an ansible project",
   "main": "index.js",
   "files": [
@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "refreshVSToken" : "vsts-npm-auth -config .npmrc"
+    "refreshVSToken": "vsts-npm-auth -config .npmrc"
   },
   "author": "Yannick GOBERT",
   "license": "MIT",
