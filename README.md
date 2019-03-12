@@ -15,5 +15,21 @@ npm install generator-ansible-project
 ```
 
 ## Usage
+```bash
+yo ansible-project --help
+Usage:
+  yo ansible-project:app [<applicationName>] [<applicationTrigram>] [<operatingSystems>] [options]
+
+Options:
+  -h,   --help           # Print the generator's options and usage
+        --skip-cache     # Do not remember prompt answers             Default: false
+        --skip-install   # Do not automatically install dependencies  Default: false
+        --force-install  # Fail on install dependencies error         Default: false
+
+Arguments:
+  applicationName     # the name of the application                           Type: String  Required: false
+  applicationTrigram  # the trigram of the application                        Type: String  Required: false
+  operatingSystems    # List of operating system target for your application  Type: String  Required: false
+```
 
 ## Revision History
