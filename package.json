@@ -1,6 +1,6 @@
 {
   "name": "generator-ansible-project",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Create an ansible project",
   "main": "index.js",
   "files": [
