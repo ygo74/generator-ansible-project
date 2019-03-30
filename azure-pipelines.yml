@@ -10,61 +10,82 @@ trigger:
 pr:
 - master
 
-pool:
-  vmImage: 'Ubuntu-16.04'
+jobs:
+- job: Calculate-Version
+  pool:
+    vmImage: 'vs2017-win2016'
+  
+  steps:
+  - powershell: echo "##vso[task.setvariable variable=myOutputVar;isOutput=true]this is the value"
+    name: setvarStep
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '8.x'
-  displayName: 'Install Node.js'
+  - script: echo $(setvarStep.myOutputVar)
+    name: echovar
 
-- script: |
-    npm install --only=dev
-    npm install -g yo
-    npm link
-  displayName: 'npm install'
 
-- script: |
-    yo ansible-project -help
-  displayName: 'Execute yo ansible-project'
+- job: Build-Package
+  pool:
+    vmImage: 'Ubuntu-16.04'
 
-- task: Npm@1
-  inputs:
-    command: custom
-    customCommand: 'test'
-  displayName: 'unit test'
+  variables:
+    myVarFromJobA: $[ dependencies.Calculate-Version.outputs['setvarStep.myOutputVar'] ] 
+    
+  steps:
 
-- task: PublishTestResults@2
-  inputs:
-    testResultsFiles: '**/unit.xml'
-    testRunTitle: 'Unit tests results'
-  condition: succeededOrFailed()
-  displayName: 'Publish tests results'
+  - script: echo $(myVarFromJobA)
+    name: echovar
 
-- task: PublishCodeCoverageResults@1
-  inputs: 
-    codeCoverageTool: Cobertura
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage/cobertura-coverage.xml'
-    reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
-  condition: succeededOrFailed()
-  displayName: 'Publish Code Coverage results'
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '8.x'
+    displayName: 'Install Node.js'
 
-- task: Npm@1
-  inputs:
-    command: custom
-    customCommand: 'run test-check-coverage'
-  displayName: 'Check code coverage status'
+  - script: |
+      npm install --only=dev
+      npm install -g yo
+      npm link
+    displayName: 'npm install'
 
-- task: Npm@1
-  inputs:
-     command: publish
-     publishRegistry: useFeed
-     publishFeed: npm-local
-  displayName: 'publish packages'
-  condition:   and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  - script: |
+      yo ansible-project -help
+    displayName: 'Execute yo ansible-project'
 
-- task: PublishPipelineArtifact@0
-  inputs:
-    artifactName: 'generator-ansible-project'
-    targetPath: $(System.DefaultWorkingDirectory)  
+  - task: Npm@1
+    inputs:
+      command: custom
+      customCommand: 'test'
+    displayName: 'unit test'
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFiles: '**/unit.xml'
+      testRunTitle: 'Unit tests results'
+    condition: succeededOrFailed()
+    displayName: 'Publish tests results'
+
+  - task: PublishCodeCoverageResults@1
+    inputs: 
+      codeCoverageTool: Cobertura
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage/cobertura-coverage.xml'
+      reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
+    condition: succeededOrFailed()
+    displayName: 'Publish Code Coverage results'
+
+  - task: Npm@1
+    inputs:
+      command: custom
+      customCommand: 'run test-check-coverage'
+    displayName: 'Check code coverage status'
+
+  - task: Npm@1
+    inputs:
+      command: publish
+      publishRegistry: useFeed
+      publishFeed: npm-local
+    displayName: 'publish packages'
+    condition:   and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'generator-ansible-project'
+      targetPath: $(System.DefaultWorkingDirectory)  
