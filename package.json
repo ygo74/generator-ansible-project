@@ -7,7 +7,7 @@
     "app"
   ],
   "scripts": {
-    "test": "./node_modules/.bin/nyc --reporter=text --reporter=cobertura --reporter=lcov ./node_modules/.bin/mocha -R xunit -O output=unit.xml test",
+    "test": "./node_modules/.bin/nyc --reporter=text --reporter=cobertura ./node_modules/.bin/mocha -R xunit -O output=unit.xml test",
     "test-check-coverage": "./node_modules/.bin/nyc check-coverage --lines 90 --per-file",
     "refreshVSToken": "vsts-npm-auth -config .npmrc"
   },
