@@ -5,6 +5,10 @@
 
 trigger:
 - master
+- configure_build
+
+pr:
+- master
 
 pool:
   vmImage: 'Ubuntu-16.04'
