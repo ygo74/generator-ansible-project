@@ -46,7 +46,7 @@ steps:
   inputs: 
     codeCoverageTool: Cobertura
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*cobertura-coverage.xml'
-    reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage/lcov-report'
   condition: succeededOrFailed()
   displayName: 'Publish Code Coverage results'
 
