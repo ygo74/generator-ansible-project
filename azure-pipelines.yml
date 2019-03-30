@@ -16,7 +16,7 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    npm install
+    npm install --only=dev
     npm install -g yo
     npm link
   displayName: 'npm install'
@@ -24,6 +24,33 @@ steps:
 - script: |
     yo ansible-project -help
   displayName: 'Execute yo ansible-project'
+
+- task: Npm@1
+  inputs:
+    command: custom
+    customCommand: 'test'
+  displayName: 'unit test'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/unit.xml'
+    testRunTitle: 'Unit tests results'
+  condition: succeededOrFailed()
+  displayName: 'Publish tests results'
+
+- task: PublishCodeCoverageResults@1
+  inputs: 
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
+  condition: succeededOrFailed()
+  displayName: 'Publish Code Coverage results'
+
+- task: Npm@1
+  inputs:
+    command: custom
+    customCommand: 'run test-check-coverage'
+  displayName: 'Check code coverage status'
 
 - task: Npm@1
   inputs:

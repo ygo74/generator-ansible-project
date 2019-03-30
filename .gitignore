@@ -1,3 +1,6 @@
 **/node_modules/
 *.lck
 .yo-rc.json
+**/coverage/
+**/.nyc_output/
+unit.xml

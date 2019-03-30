@@ -7,7 +7,8 @@
     "app"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/.bin/nyc --reporter=text --reporter=cobertura --reporter=lcov ./node_modules/.bin/mocha -R xunit -O output=unit.xml test",
+    "test-check-coverage": "./node_modules/.bin/nyc check-coverage --lines 90 --per-file",
     "refreshVSToken": "vsts-npm-auth -config .npmrc"
   },
   "author": "Yannick GOBERT",
@@ -26,5 +27,11 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/ygo74/generator-ansible-project"
+  },
+  "devDependencies": {
+    "mocha": "^6.0.2",
+    "nyc": "^13.3.0",
+    "yeoman-assert": "^3.1.1",
+    "yeoman-test": "^1.9.1"
   }
 }
