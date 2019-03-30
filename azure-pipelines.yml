@@ -21,7 +21,7 @@ jobs:
     inputs:
       targetType: 'filePath'
       filePath: 'tools\CalculateVersion.ps1'      
-    name: setvarStep
+    name: newVersion
 
   - script: echo $(setvarStep.myOutputVar)
     name: echovar
@@ -33,11 +33,11 @@ jobs:
     vmImage: 'Ubuntu-16.04'
 
   variables:
-    myVarFromJobA: $[ dependencies.CalculateVersion.outputs['setvarStep.myOutputVar'] ] 
+    newVersion: $[ dependencies.CalculateVersion.outputs['newVersion.myOutputVar'] ] 
 
   steps:
 
-  - script: echo $(myVarFromJobA)
+  - script: echo $(newVersion)
     name: echovar
 
   - task: NodeTool@0
@@ -49,6 +49,7 @@ jobs:
       npm install --only=dev
       npm install -g yo
       npm link
+      npm version "$(newVersion)-$(Build.BuildNumber)"
     displayName: 'npm install'
 
   - script: |
@@ -88,7 +89,7 @@ jobs:
       publishRegistry: useFeed
       publishFeed: npm-local
     displayName: 'publish packages'
-    condition:   and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    #condition:   and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
   - task: PublishPipelineArtifact@0
     inputs:

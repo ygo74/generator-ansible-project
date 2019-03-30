@@ -16,7 +16,8 @@ if ($foundVersions.length -eq 0)
     $latestVersion = New-Object -TypeName System.Version 0.0.1
 }
 else {
-    $latestVersion = ($foundVersions |Sort-Object -Descending)[0]
+    $version = ($foundVersions |Sort-Object -Descending)[0]
+    $latestVersion = New-Object -TypeName System.Version $version.Major, $version.Minor, $($version.Build +1)
 }
 
 write-output "##vso[task.setvariable variable=myOutputVar;isOutput=true]$latestVersion"
