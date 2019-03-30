@@ -20,10 +20,7 @@ describe(`app:index`, function () {
             environmentsTargeted])
           .on(`error`, function (e) {
              assert.fail(e);
-          }
-          .on(`end`, done)
-          );
- 
-      
+          })
+          .on(`end`, done());    
     });
 }); 
