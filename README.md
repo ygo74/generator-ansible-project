@@ -6,8 +6,7 @@ Yeoman generator for ansible project
 ## Project Status
 | Status | Unit tests | Code Covergage | 
 |--------|------------|----------------|
-| [![Build Status](https://dev.azure.com/ygo74/generator-ansible-project/_apis/build/status/ygo74.generator-ansible-project%20(1)?branchName=master)](https://dev.azure.com/ygo74/generator-ansible-project/_build/latest?definitionId=4&branchName=master)|
-| ![Azure DevOps tests](https://img.shields.io/azure-devops/tests/ygo74/generator-ansible-project/4.svg) | ![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/ygo74/generator-ansible-project/4.svg) |
+| [![Build Status](https://dev.azure.com/ygo74/generator-ansible-project/_apis/build/status/ygo74.generator-ansible-project%20(1)?branchName=master)](https://dev.azure.com/ygo74/generator-ansible-project/_build/latest?definitionId=4&branchName=master) | ![Azure DevOps tests](https://img.shields.io/azure-devops/tests/ygo74/generator-ansible-project/4.svg) | ![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/ygo74/generator-ansible-project/4.svg) |
 
 
 | Latest version | Download |
