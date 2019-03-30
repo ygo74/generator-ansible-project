@@ -101,6 +101,7 @@ jobs:
       artifactName: 'generator-ansible-project'
       targetPath:   $(System.DefaultWorkingDirectory)  
 
+  #Create pre-release
   - task: GitHubRelease@0
     inputs:
       githubConnection: github_connection_yeoman
