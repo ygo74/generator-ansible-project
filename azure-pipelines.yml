@@ -49,7 +49,7 @@ jobs:
       npm install --only=dev
       npm install -g yo
       npm link
-      npm version "$(newVersion)-$(Build.BuildNumber)"
+      npm version "$(newVersion)-$(Build.BuildNumber)" --no-git-tag-version
     displayName: 'npm install'
 
   - script: |
