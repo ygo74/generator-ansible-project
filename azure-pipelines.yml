@@ -17,6 +17,7 @@ jobs:
     vmImage: 'vs2017-win2016'
   
   steps:
+  # Ensure same version of node tools to use npm
   - task: NodeTool@0
     inputs:
       versionSpec: '8.x'
