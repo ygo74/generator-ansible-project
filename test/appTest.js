@@ -4,7 +4,7 @@ const path = require(`path`);
 
 describe(`app:index`, function () {
 
-    it(`arguments default`, function () {
+    it(`arguments default`, function (done) {
  
        // Arrange
  
@@ -20,7 +20,10 @@ describe(`app:index`, function () {
             environmentsTargeted])
           .on(`error`, function (e) {
              assert.fail(e);
-          });
+          }
+          .on(`end`, done)
+          );
  
+      
     });
 }); 
