@@ -17,6 +17,11 @@ jobs:
     vmImage: 'vs2017-win2016'
   
   steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '8.x'
+    displayName: 'Install Node.js'
+
   - task: PowerShell@2
     inputs:
       targetType: 'filePath'
@@ -58,40 +63,53 @@ jobs:
 
   - task: Npm@1
     inputs:
-      command: custom
-      customCommand: 'test'
+      command:       custom
+      customCommand: 'test'      
     displayName: 'unit test'
 
   - task: PublishTestResults@2
     inputs:
       testResultsFiles: '**/unit.xml'
-      testRunTitle: 'Unit tests results'
+      testRunTitle:     'Unit tests results'
     condition: succeededOrFailed()
     displayName: 'Publish tests results'
 
   - task: PublishCodeCoverageResults@1
     inputs: 
-      codeCoverageTool: Cobertura
+      codeCoverageTool:    Cobertura
       summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage/cobertura-coverage.xml'
-      reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
+      reportDirectory:     '$(System.DefaultWorkingDirectory)/**/coverage'
     condition: succeededOrFailed()
     displayName: 'Publish Code Coverage results'
 
   - task: Npm@1
     inputs:
-      command: custom
+      command:       custom
       customCommand: 'run test-check-coverage'
     displayName: 'Check code coverage status'
 
   - task: Npm@1
     inputs:
-      command: publish
+      command:         publish
       publishRegistry: useFeed
-      publishFeed: npm-local
+      publishFeed:     npm-local
     displayName: 'publish packages'
     #condition:   and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
   - task: PublishPipelineArtifact@0
     inputs:
       artifactName: 'generator-ansible-project'
-      targetPath: $(System.DefaultWorkingDirectory)  
+      targetPath:   $(System.DefaultWorkingDirectory)  
+
+  - task: GitHubRelease@0
+    inputs:
+      githubConnection: github_connection_yeoman
+      repositoryName:   ygo74/generator-ansible-project
+      action:           create
+      tag:              $(newVersion)
+      target:           $(Build.SourceVersion)
+      isDraft:          true
+      isPreRelease:     true
+      assets:           $(Build.ArtifactStagingDirectory)/*
+      title:            Release-$(newVersion)
+    condition: eq(variables['Build.Reason'], 'PullRequest')
