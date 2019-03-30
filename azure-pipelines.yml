@@ -104,16 +104,3 @@ jobs:
       artifactName: 'generator-ansible-project'
       targetPath:   $(System.DefaultWorkingDirectory)  
 
-  #Create pre-release
-  - task: GitHubRelease@0
-    inputs:
-      githubConnection: github_connection_yeoman
-      repositoryName:   ygo74/generator-ansible-project
-      action:           create
-      tag:              $(newVersion)
-      target:           $(Build.SourceVersion)
-      isDraft:          true
-      isPreRelease:     true
-      assets:           $(Build.ArtifactStagingDirectory)/*
-      title:            Release-$(newVersion)
-    condition: eq(variables['Build.Reason'], 'PullRequest')
