@@ -11,19 +11,24 @@ pr:
 - master
 
 jobs:
+# Calculate the next version of npm packages
 - job: CalculateVersion
   pool:
     vmImage: 'vs2017-win2016'
   
   steps:
-  - powershell: echo "##vso[task.setvariable variable=myOutputVar;isOutput=true]this is the value"
+  - task: PowerShell@2
+    inputs:
+      targetType: 'filePath'
+      filePath: 'tools\CalculateVersion.ps1'      
     name: setvarStep
 
   - script: echo $(setvarStep.myOutputVar)
     name: echovar
 
-
+# Build Package with the new version
 - job: BuildPackage
+  dependsOn: CalculateVersion
   pool:
     vmImage: 'Ubuntu-16.04'
 
