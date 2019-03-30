@@ -11,7 +11,7 @@ pr:
 - master
 
 jobs:
-- job: Calculate-Version
+- job: CalculateVersion
   pool:
     vmImage: 'vs2017-win2016'
   
@@ -23,13 +23,13 @@ jobs:
     name: echovar
 
 
-- job: Build-Package
+- job: BuildPackage
   pool:
     vmImage: 'Ubuntu-16.04'
 
   variables:
-    myVarFromJobA: $[ dependencies.Calculate-Version.outputs['setvarStep.myOutputVar'] ] 
-    
+    myVarFromJobA: $[ dependencies.CalculateVersion.outputs['setvarStep.myOutputVar'] ] 
+
   steps:
 
   - script: echo $(myVarFromJobA)
