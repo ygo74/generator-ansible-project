@@ -28,7 +28,9 @@ jobs:
       filePath: 'tools\CalculateVersion.ps1'      
     name: newVersion
 
-  - script: echo $(setvarStep.myOutputVar)
+  - script: |
+      echo $(setvarStep.myOutputVar)
+      echo $(Build.Reason)
     name: echovar
 
 # Build Package with the new version
