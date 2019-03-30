@@ -9,6 +9,7 @@
   "scripts": {
     "test": "./node_modules/.bin/nyc --reporter=text --reporter=cobertura --reporter=html ./node_modules/.bin/mocha -R xunit -O output=unit.xml test",
     "test-check-coverage": "./node_modules/.bin/nyc check-coverage --lines 90 --per-file",
+    "posttest": "node ./tools/process-coverage-report.js",
     "refreshVSToken": "vsts-npm-auth -config .npmrc"
   },
   "author": "Yannick GOBERT",
@@ -31,6 +32,7 @@
   "devDependencies": {
     "mocha": "^6.0.2",
     "nyc": "^13.3.0",
+    "vsts-coverage-styles": "^1.0.8",
     "yeoman-assert": "^3.1.1",
     "yeoman-test": "^1.9.1"
   }
