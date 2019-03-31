@@ -9,7 +9,7 @@ trigger:
     - master
     - refs/heads/*
     - refs/tags/*
-
+    
 pr:
 - master
 
