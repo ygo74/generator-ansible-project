@@ -4,14 +4,12 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-  tags:
-    include:
-    - v*
   branches:
     include:
     - master
-    - configure_build
-
+    - refs/heads/*
+    - refs/tags/*
+    
 pr:
 - master
 
