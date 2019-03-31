@@ -4,8 +4,13 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- master
-- configure_build
+  tags:
+    include:
+    - v*
+  branches:
+    include:
+    - master
+    - configure_build
 
 pr:
 - master
@@ -97,10 +102,11 @@ jobs:
       publishRegistry: useFeed
       publishFeed:     npm-local
     displayName: 'publish packages'
-    #condition:   and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    condition:   and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
   - task: PublishPipelineArtifact@0
     inputs:
       artifactName: 'generator-ansible-project'
       targetPath:   $(System.DefaultWorkingDirectory)  
+    condition:   and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
 
