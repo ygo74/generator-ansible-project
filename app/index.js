@@ -14,7 +14,8 @@ function readArguments(generator) {
    // via the command line they will be queried during the prompting priority
    generator.argument('applicationName', { type: String, required: false, desc: 'the name of the application' });
    generator.argument('applicationTrigram', { type: String, required: false, desc: 'the trigram of the application' });
-   generator.argument('operatingSystems', { type: String, required: false, desc: 'List of operating system target for your application' });
+   generator.argument('operatingSystems', { type: Array, required: false, desc: 'List of operating system target for your application' });
+   generator.argument('environmentsTargeted', { type: Array, required: false, desc: 'List of operating system target for your application' });
 }
 
 

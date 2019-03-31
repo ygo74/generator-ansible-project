@@ -4,39 +4,109 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- master
+  tags:
+    include:
+    - v*
+  branches:
+    include:
+    - master
+    - configure_build
 
 pr:
 - master
 
-pool:
-  vmImage: 'Ubuntu-16.04'
+jobs:
+# Calculate the next version of npm packages
+- job: CalculateVersion
+  pool:
+    vmImage: 'vs2017-win2016'
+  
+  steps:
+  # Ensure same version of node tools to use npm
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '8.x'
+    displayName: 'Install Node.js'
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '8.x'
-  displayName: 'Install Node.js'
+  - task: PowerShell@2
+    inputs:
+      targetType: 'filePath'
+      filePath: 'tools\CalculateVersion.ps1'      
+    name: newVersion
 
-- script: |
-    npm install
-    npm install -g yo
-    npm link
-  displayName: 'npm install'
+  - script: |
+      echo $(setvarStep.myOutputVar)
+      echo $(Build.Reason)
+    name: echovar
 
-- script: |
-    yo ansible-project -help
-  displayName: 'Execute yo ansible-project'
+# Build Package with the new version
+- job: BuildPackage
+  dependsOn: CalculateVersion
+  pool:
+    vmImage: 'Ubuntu-16.04'
 
-- task: Npm@1
-  inputs:
-     command: publish
-     publishRegistry: useFeed
-     publishFeed: npm-local
-  displayName: 'publish packages'
-  condition:   and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  variables:
+    newVersion: $[ dependencies.CalculateVersion.outputs['newVersion.myOutputVar'] ] 
 
-- task: PublishPipelineArtifact@0
-  inputs:
-    artifactName: 'generator-ansible-project'
-    targetPath: $(System.DefaultWorkingDirectory)  
+  steps:
+
+  - script: echo $(newVersion)
+    name: echovar
+
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '8.x'
+    displayName: 'Install Node.js'
+
+  - script: |
+      npm install --only=dev
+      npm install -g yo
+      npm link
+      npm version "$(newVersion)-$(Build.BuildNumber)" --no-git-tag-version
+    displayName: 'npm install'
+
+  - script: |
+      yo ansible-project -help
+    displayName: 'Execute yo ansible-project'
+
+  - task: Npm@1
+    inputs:
+      command:       custom
+      customCommand: 'test'      
+    displayName: 'unit test'
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFiles: '**/unit.xml'
+      testRunTitle:     'Unit tests results'
+    condition: succeededOrFailed()
+    displayName: 'Publish tests results'
+
+  - task: PublishCodeCoverageResults@1
+    inputs: 
+      codeCoverageTool:    Cobertura
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage/cobertura-coverage.xml'
+      reportDirectory:     '$(System.DefaultWorkingDirectory)/**/coverage'
+    condition: succeededOrFailed()
+    displayName: 'Publish Code Coverage results'
+
+  - task: Npm@1
+    inputs:
+      command:       custom
+      customCommand: 'run test-check-coverage'
+    displayName: 'Check code coverage status'
+
+  - task: Npm@1
+    inputs:
+      command:         publish
+      publishRegistry: useFeed
+      publishFeed:     npm-local
+    displayName: 'publish packages'
+    condition:   and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'generator-ansible-project'
+      targetPath:   $(System.DefaultWorkingDirectory)  
+    condition:   and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+
