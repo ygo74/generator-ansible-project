@@ -11,7 +11,7 @@ Yeoman generator for ansible project
 
 | Latest version | Download |
 |----------------|----------|
-| ![npm](https://img.shields.io/npm/v/generator-ansible-project.svg) | ![npm](https://img.shields.io/npm/dw/generator-ansible-project.svg) |
+| [![npm](https://img.shields.io/npm/v/generator-ansible-project.svg)](https://www.npmjs.com/package/generator-ansible-project) | [![npm](https://img.shields.io/npm/dw/generator-ansible-project.svg)](https://www.npmjs.com/package/generator-ansible-project) |
 
 
 ## Description
